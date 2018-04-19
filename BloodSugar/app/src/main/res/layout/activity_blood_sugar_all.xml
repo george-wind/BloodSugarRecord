@@ -43,12 +43,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:hint=""
-            android:textSize="14sp"
             android:inputType="number"
             android:paddingBottom="7dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="7dp" />
+            android:paddingTop="7dp"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,12 +61,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:hint=""
-            android:textSize="14sp"
             android:inputType="number"
             android:paddingBottom="7dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="7dp" />
+            android:paddingTop="7dp"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/bt_search"
@@ -89,7 +89,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="日期" />
+            android:text="日期"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_time"
@@ -97,7 +98,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="时间" />
+            android:text="时间"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_result"
@@ -105,7 +107,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="检测结果" />
+            android:text="检测结果"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_operation"
