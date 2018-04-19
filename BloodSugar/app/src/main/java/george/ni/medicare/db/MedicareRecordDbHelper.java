@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -96,22 +98,68 @@ public class MedicareRecordDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<BloodSugarEntity> loadNormalBloodSugarDatas(int start ,int count) {
+    public List<BloodSugarEntity> loadNormalBloodSugarDatas(int start ,int count,String year,String month) {
         List<BloodSugarEntity> bloodSugarEntityList = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
         String[] columns = new String[] {COLUMN_ID,COLUMN_RESULT,COLUMN_TEST_TIME_MILLIS};
         String limit = null;
+        String selection = COLUMN_STATE + " =? ";
+
+        ArrayList<String> stringArgsList = new ArrayList<>();
+        stringArgsList.add("0");
+
         if (start != -1 && count !=-1) {
             limit = start+","+count;
         }
+
+        if (!TextUtils.isEmpty(year)) {
+            selection += " AND "+COLUMN_TEST_YEAR + " =? ";
+            stringArgsList.add(year);
+        }
+        if (!TextUtils.isEmpty(month)) {
+            selection += " AND "+COLUMN_TEST_MONTH + " =? ";
+            stringArgsList.add(month);
+        }
+        String[] stringArgs = new String[stringArgsList.size()];
+        stringArgsList.toArray(stringArgs);
         Cursor cursor = null;
         try {
-            cursor = database.query(tableName,columns,COLUMN_STATE + " =? ",new String[]{"0"},null,null,COLUMN_TEST_TIME_MILLIS + " DESC",limit);
+            cursor = database.query(tableName,columns,selection,stringArgs,null,null,COLUMN_TEST_TIME_MILLIS + " DESC",limit);
             while (cursor.moveToNext()) {
                 BloodSugarEntity entity = new BloodSugarEntity();
                 entity.setId(cursor.getLong(0));
                 entity.setResult(cursor.getString(1));
                 entity.setTestTimeStamp( cursor.getLong(2));
+                bloodSugarEntityList.add(entity);
+            }
+        }catch (Exception ex){
+
+        }finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            database.close();
+        }
+        return bloodSugarEntityList;
+    }
+
+
+    public List<BloodSugarEntity> loadAllBloodSugarRecords() {
+        List<BloodSugarEntity> bloodSugarEntityList = new ArrayList<>();
+        SQLiteDatabase database = getReadableDatabase();
+        String[] columns = new String[] {COLUMN_ID,COLUMN_RESULT,COLUMN_TEST_TIME_MILLIS,COLUMN_STATE};
+        String limit = null;
+        String selection = null;
+        String[] stringArgs = null;
+        Cursor cursor = null;
+        try {
+            cursor = database.query(tableName,columns,selection,stringArgs,null,null,COLUMN_TEST_TIME_MILLIS + " DESC",limit);
+            while (cursor.moveToNext()) {
+                BloodSugarEntity entity = new BloodSugarEntity();
+                entity.setId(cursor.getLong(0));
+                entity.setResult(cursor.getString(1));
+                entity.setTestTimeStamp( cursor.getLong(2));
+                entity.setState(cursor.getInt(3));
                 bloodSugarEntityList.add(entity);
             }
         }catch (Exception ex){

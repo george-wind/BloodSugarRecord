@@ -28,6 +28,10 @@
         <activity
             android:name=".BloodSugarCheckActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".BloodSugarRecordsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
