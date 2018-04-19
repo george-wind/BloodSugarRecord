@@ -27,6 +27,7 @@ public class StartActivity extends BaseActivity {
             public void run() {
                 Intent intent = new Intent(mActivity,MainActivity.class);
                 startActivity(intent);
+                StartActivity.this.finish();
             }
         },2000);
     }
