@@ -9,14 +9,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="george.ni.medicare.MainActivity"
+            android:name="george.ni.medicare.activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
 
         <activity
-            android:name="george.ni.medicare.StartActivity"
+            android:name="george.ni.medicare.activity.StartActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,11 +26,10 @@
         </activity>
 
         <activity
-            android:name=".BloodSugarCheckActivity"
+            android:name=".activity.AllRecordsActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".BloodSugarRecordsActivity"
+            android:name=".activity.CheckActivity"
             android:screenOrientation="portrait" />
     </application>
 

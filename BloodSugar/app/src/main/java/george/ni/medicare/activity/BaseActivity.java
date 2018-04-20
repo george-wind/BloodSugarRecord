@@ -1,4 +1,4 @@
-package george.ni.medicare;
+package george.ni.medicare.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

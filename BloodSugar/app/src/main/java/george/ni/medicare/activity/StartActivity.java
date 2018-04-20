@@ -1,10 +1,12 @@
-package george.ni.medicare;
+package george.ni.medicare.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+
+import george.ni.medicare.R;
 
 /**
  * Created by Thinkpad on 2018/4/19.

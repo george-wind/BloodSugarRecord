@@ -6,15 +6,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context="george.ni.medicare.MainActivity">
+    tools:context="george.ni.medicare.activity.MainActivity">
 
 
-    <Button
-        android:id="@+id/bt_blood_sugar"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:text="血糖记录" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <Button
+            android:id="@+id/bt_blood_sugar"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:text="血糖记录" />
+        <Button
+            android:id="@+id/bt_blood_pressure"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:text="血压记录" />
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package george.ni.medicare;
+package george.ni.medicare.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,27 +17,45 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import george.ni.medicare.R;
 import george.ni.medicare.adapter.BloodSugarCheckAdapter;
 import george.ni.medicare.db.MedicareRecordDbHelper;
 import george.ni.medicare.entity.BloodSugarEntity;
 
-public class BloodSugarCheckActivity extends BaseActivity implements View.OnClickListener {
+/**
+ * Created by Thinkpad on 2018/4/20.
+ */
+
+public  class CheckActivity extends BaseActivity implements View.OnClickListener{
     private BloodSugarCheckAdapter mBloodSugarCheckAdapter;
     private ListView mLvBloodSugar;
     private SmartRefreshLayout mSmartRefreshLayout;
-    private List<BloodSugarEntity> mBloodSugarDataList;
-    private int count = 20;
-    private EditText mEtBloodSuger;
+    protected List<BloodSugarEntity> mCheckDataList;
+    protected int count = 20;
+    protected EditText mEtBloodSuger;
     private Button mBtConfirm;
     private TextView mTvAllRecords;
+    protected TextView mTvTitle;
+    private String mTableName;
+    private int INTENT_FROM_TYPE;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blood_sugar);
+        setContentView(R.layout.activity_record_check);
+        getIntentData();
         initViews();
         setRefreshLayout();
         setListeners();
         initData();
+    }
+
+    private void getIntentData() {
+        INTENT_FROM_TYPE = getIntent().getIntExtra(AllRecordsActivity.INTENT_FROM, AllRecordsActivity.INTENT_FROM_BLOOD_SUGAR);
+        if (INTENT_FROM_TYPE == AllRecordsActivity.INTENT_FROM_BLOOD_SUGAR) {
+            mTableName = MedicareRecordDbHelper.tableName_BLODD_SUGAR;
+        }else {
+            mTableName = MedicareRecordDbHelper.tableName_BLODD_PRESSURE;
+        }
     }
 
     private void initViews() {
@@ -46,6 +64,12 @@ public class BloodSugarCheckActivity extends BaseActivity implements View.OnClic
         mEtBloodSuger = (EditText) findViewById(R.id.et_input_blood_sugar);
         mBtConfirm = (Button) findViewById(R.id.bt_confirm);
         mTvAllRecords = (TextView) findViewById(R.id.tv_all_record);
+        mTvTitle = (TextView) findViewById(R.id.tv_title);
+        if (INTENT_FROM_TYPE == AllRecordsActivity.INTENT_FROM_BLOOD_SUGAR) {
+            mTvTitle.setText("血糖记录");
+        }else {
+            mTvTitle.setText("血压记录");
+        }
     }
 
     private void setRefreshLayout() {
@@ -53,20 +77,20 @@ public class BloodSugarCheckActivity extends BaseActivity implements View.OnClic
         mSmartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mBloodSugarDataList = MedicareRecordDbHelper.getInstance(mActivity).loadNormalBloodSugarDatas(0,count,null,null);
-                mBloodSugarCheckAdapter.setData(mBloodSugarDataList);
+                mCheckDataList = MedicareRecordDbHelper.getInstance(mActivity).loadNormalCheckDatas(mTableName,0,count,null,null);
+                mBloodSugarCheckAdapter.setData(mCheckDataList);
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
         });
 //        mSmartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
 //            @Override
 //            public void onLoadMore(RefreshLayout refreshlayout) {
-//                List<BloodSugarEntity> bloodSugarEntities = MedicareRecordDbHelper.getInstance(mActivity).loadNormalBloodSugarDatas(mBloodSugarDataList.size(),20);
+//                List<BloodSugarEntity> bloodSugarEntities = MedicareRecordDbHelper.getInstance(mActivity).loadNormalCheckDatas(mCheckDataList.size(),20);
 //                if (bloodSugarEntities.size() <= 0) {
 //                    showShortToast("没有更多数据");
 //                }else {
-//                    mBloodSugarDataList.addAll(bloodSugarEntities);
-//                    mBloodSugarCheckAdapter.setData(mBloodSugarDataList);
+//                    mCheckDataList.addAll(bloodSugarEntities);
+//                    mBloodSugarCheckAdapter.setData(mCheckDataList);
 //                }
 //                refreshlayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
 //            }
@@ -79,34 +103,37 @@ public class BloodSugarCheckActivity extends BaseActivity implements View.OnClic
     }
 
     private void initData(){
-        mBloodSugarDataList = new ArrayList<>();
-        mBloodSugarCheckAdapter = new BloodSugarCheckAdapter(mActivity,mBloodSugarDataList);
+        mCheckDataList = new ArrayList<>();
+        mBloodSugarCheckAdapter = new BloodSugarCheckAdapter(mActivity, mCheckDataList,mTableName);
         mLvBloodSugar.setAdapter(mBloodSugarCheckAdapter);
         mSmartRefreshLayout.autoRefresh();
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_confirm:
-                addBloodSugarRecord();
+                responseToConfirm();
                 break;
             case R.id.tv_all_record:
-                Intent allRecordIntent = new Intent(mActivity,BloodSugarRecordsActivity.class);
+                Intent allRecordIntent = new Intent(mActivity,AllRecordsActivity.class);
+                allRecordIntent.putExtra(AllRecordsActivity.INTENT_FROM,INTENT_FROM_TYPE);
                 startActivity(allRecordIntent);
                 break;
         }
     }
 
-    private void addBloodSugarRecord() {
+    private void responseToConfirm() {
         String text = mEtBloodSuger.getText().toString().trim();
         if (TextUtils.isEmpty(text)) {
             showShortToast("请输入检测结果");
             return;
         }
         BloodSugarEntity entity = new BloodSugarEntity(text,System.currentTimeMillis());
-        MedicareRecordDbHelper.getInstance(mActivity).insertBloodSugarData(entity);
+        MedicareRecordDbHelper.getInstance(mActivity).insertCheckData(mTableName,entity);
         mSmartRefreshLayout.autoRefresh();
         mEtBloodSuger.setText("");
     }
+
 }

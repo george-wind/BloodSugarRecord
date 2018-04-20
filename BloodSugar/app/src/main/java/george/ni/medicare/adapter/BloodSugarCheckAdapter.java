@@ -13,9 +13,11 @@ import george.ni.medicare.utils.DateUtils;
 
 
 public class BloodSugarCheckAdapter extends CommonAdapter<BloodSugarEntity> {
-    public BloodSugarCheckAdapter(Context context, List<BloodSugarEntity> datas) {
+    private String tableName;
+    public BloodSugarCheckAdapter(Context context, List<BloodSugarEntity> datas,String tableName) {
         super(context, datas);
         layoutId = R.layout.item_blood_sugar;
+        this.tableName = tableName;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class BloodSugarCheckAdapter extends CommonAdapter<BloodSugarEntity> {
         rlDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MedicareRecordDbHelper.getInstance(context).deleteBloodSugarDataByLogic(bloodSugarEntity);
+                MedicareRecordDbHelper.getInstance(context).deleteCheckDataByLogic(tableName,bloodSugarEntity);
                 datas.remove(bloodSugarEntity);
                 BloodSugarCheckAdapter.this.notifyDataSetChanged();
             }
