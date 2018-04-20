@@ -93,6 +93,35 @@ public class MedicareRecordDbHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
 
 
+        String sql2 = "CREATE TABLE IF NOT EXISTS ";
+        sql2 += this.tableName_BLODD_PRESSURE;
+        sql2 += "(";
+        sql2 += COLUMN_ID;
+        sql2 += " INTEGER PRIMARY KEY,";
+        tableContent.put(COLUMN_RESULT, " text");
+        tableContent.put(COLUMN_TEST_TIME_MILLIS, " integer");
+        tableContent.put(COLUMN_STATE, " integer");
+        tableContent.put(COLUMN_TEST_YEAR, " integer");
+        tableContent.put(COLUMN_TEST_MONTH, " integer");
+        tableContent.put(COLUMN_TEST_DAY, " integer");
+        Set set2 = tableContent.entrySet();
+        Iterator iterator2 = set2.iterator();
+        index = 0;
+        while (iterator2.hasNext()) {
+            index++;
+            Map.Entry mapEntry = (Map.Entry) iterator2.next();
+            if (mapEntry.getValue() != null) {
+                sql2 += (String) mapEntry.getKey();
+                sql2 += " ";
+                sql2 += (String) mapEntry.getValue();
+
+                if (index < this.tableContent.size()) {
+                    sql2 += ",";
+                }
+            }
+        }
+        sql2 += ")";
+        db.execSQL(sql2);
     }
 
     @Override

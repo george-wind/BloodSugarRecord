@@ -70,10 +70,19 @@
 
         <Button
             android:id="@+id/bt_search"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:text="查找" />
+            android:text="查找"
+            android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/bt_export"
+            android:layout_width="55dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="1dp"
+            android:text="导出"
+            android:textSize="15sp"/>
     </LinearLayout>
 
     <LinearLayout
