@@ -21,14 +21,14 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import george.ni.medicare.R;
+import george.ni.medicare.adapter.BloodPressureCheckAdapter;
 import george.ni.medicare.adapter.BloodSugarCheckAdapter;
 import george.ni.medicare.db.MedicareRecordDbHelper;
+import george.ni.medicare.entity.BloodPressureEntity;
 import george.ni.medicare.entity.BloodSugarEntity;
 import george.ni.medicare.permission.OnPermissionCallback;
 import george.ni.medicare.permission.PermissionAlterDialogFactory;
@@ -40,11 +40,11 @@ import george.ni.medicare.utils.FileUtils;
  * 全部记录页面
  */
 
-public class AllRecordsActivity extends BaseActivity implements View.OnClickListener {
+public class AllBloodPressureRecordsActivity extends BaseActivity implements View.OnClickListener {
     private ListView mLvBloodSugar;
     private SmartRefreshLayout mSmartRefreshLayout;
-    protected List<BloodSugarEntity> mBloodSugarDataList;
-    private BloodSugarCheckAdapter mBloodSugarCheckAdapter;
+    protected List<BloodPressureEntity> mBloodPressureDataList;
+    private BloodPressureCheckAdapter mBloodSugarCheckAdapter;
     private EditText mEtYear;
     private EditText mEtMonth;
     private Button mBtSearch;
@@ -70,12 +70,12 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
     }
 
     private void getIntentData() {
-        INTENT_FROM_TYPE = getIntent().getIntExtra(INTENT_FROM, INTENT_FROM_BLOOD_SUGAR);
-        if (INTENT_FROM_TYPE == AllRecordsActivity.INTENT_FROM_BLOOD_SUGAR) {
-            mTableName = MedicareRecordDbHelper.tableName_BLODD_SUGAR;
-        } else {
-            mTableName = MedicareRecordDbHelper.tableName_BLODD_PRESSURE;
-        }
+//        INTENT_FROM_TYPE = getIntent().getIntExtra(INTENT_FROM, INTENT_FROM_BLOOD_SUGAR);
+//        if (INTENT_FROM_TYPE == AllBloodPressureRecordsActivity.INTENT_FROM_BLOOD_SUGAR) {
+//            mTableName = MedicareRecordDbHelper.tableName_BLODD_SUGAR;
+//        } else {
+//        }
+        mTableName = MedicareRecordDbHelper.tableName_BLODD_PRESSURE;
     }
 
     private void initViews() {
@@ -94,15 +94,15 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
             public void onRefresh(RefreshLayout refreshlayout) {
                 String year = mEtYear.getText().toString().trim();
                 String month = mEtMonth.getText().toString().trim();
-                mBloodSugarDataList = MedicareRecordDbHelper.getInstance(mActivity).loadNormalCheckDatas(mTableName, -1, -1, year, month);
-                mBloodSugarCheckAdapter.setData(mBloodSugarDataList);
+                mBloodPressureDataList = MedicareRecordDbHelper.getInstance(mActivity).loadNormalBloodPressureCheckDatas(mTableName, -1, -1, year, month);
+                mBloodSugarCheckAdapter.setData(mBloodPressureDataList);
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
         });
 //        mSmartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
 //            @Override
 //            public void onLoadMore(RefreshLayout refreshlayout) {
-//                List<BloodSugarEntity> bloodSugarEntities = MedicareRecordDbHelper.getInstance(mActivity).loadNormalCheckDatas(mCheckDataList.size(),count,null,null);
+//                List<BloodSugarEntity> bloodSugarEntities = MedicareRecordDbHelper.getInstance(mActivity).loadNormalBloodSugarCheckDatas(mCheckDataList.size(),count,null,null);
 //                if (bloodSugarEntities.size() <= 0) {
 //                    showShortToast("没有更多数据");
 //                }else {
@@ -121,8 +121,8 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initData() {
-        mBloodSugarDataList = new ArrayList<>();
-        mBloodSugarCheckAdapter = new BloodSugarCheckAdapter(mActivity, mBloodSugarDataList, mTableName);
+        mBloodPressureDataList = new ArrayList<>();
+        mBloodSugarCheckAdapter = new BloodPressureCheckAdapter(mActivity, mBloodPressureDataList, mTableName);
         mLvBloodSugar.setAdapter(mBloodSugarCheckAdapter);
         mSmartRefreshLayout.autoRefresh();
     }
@@ -156,7 +156,7 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
                         @Override
                         public void onPermissionNeedExplanation(@NonNull final String permissionName) {
                             AlertDialog alertDialog = PermissionAlterDialogFactory.getAlertDialog(
-                                    AllRecordsActivity.this,
+                                    AllBloodPressureRecordsActivity.this,
                                     "请求权限",
                                     "允许",
                                     "请开启读写文件权限",
@@ -175,7 +175,7 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
                         @Override
                         public void onPermissionReallyDeclined(@NonNull String permissionName) {
                             AlertDialog alertDialog = PermissionAlterDialogFactory.getAlertDialog(
-                                    AllRecordsActivity.this,
+                                    AllBloodPressureRecordsActivity.this,
                                     "请求权限",
                                     "允许",
                                     "请开启读写文件权限",
@@ -224,7 +224,7 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
         @Override
         protected Void doInBackground(Void... voids) {
             List<BloodSugarEntity> entities =
-                    MedicareRecordDbHelper.getInstance(mActivity).loadAllCheckRecords(mTableName);
+                    MedicareRecordDbHelper.getInstance(mActivity).loadAllBloodSugarCheckRecords(mTableName);
             String jsonStr = JSON.toJSONString(entities);
             FileUtils.writeStingToFile(getExportPath(), jsonStr, false);
             return null;
@@ -249,7 +249,7 @@ public class AllRecordsActivity extends BaseActivity implements View.OnClickList
             if (!directory.exists()){
                 directory.mkdirs();
             }
-            path = directory.getAbsolutePath()+File.separator+"CheckRecord.txt";
+            path = directory.getAbsolutePath()+File.separator+"BloodPressureRecord.txt";
             return path;
         }
     }

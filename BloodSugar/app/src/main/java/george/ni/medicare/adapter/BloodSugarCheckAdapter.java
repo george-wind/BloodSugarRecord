@@ -29,7 +29,7 @@ public class BloodSugarCheckAdapter extends CommonAdapter<BloodSugarEntity> {
         rlDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MedicareRecordDbHelper.getInstance(context).deleteCheckDataByLogic(tableName,bloodSugarEntity);
+                MedicareRecordDbHelper.getInstance(context).deleteBloodSugarCheckDataByLogic(tableName,bloodSugarEntity);
                 datas.remove(bloodSugarEntity);
                 BloodSugarCheckAdapter.this.notifyDataSetChanged();
             }

@@ -27,10 +27,16 @@
         </activity>
 
         <activity
-            android:name=".activity.AllRecordsActivity"
+            android:name=".activity.AllBloodSugarRecordsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.CheckActivity"
+            android:name=".activity.AllBloodPressureRecordsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CheckBloodSugarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CheckBloodPressureActivity"
             android:screenOrientation="portrait" />
     </application>
 

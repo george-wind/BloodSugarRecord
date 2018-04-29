@@ -31,7 +31,7 @@ public class StartActivity extends BaseActivity {
                 startActivity(intent);
                 StartActivity.this.finish();
             }
-        },2000);
+        },1000);
     }
 
     private void initHandler() {

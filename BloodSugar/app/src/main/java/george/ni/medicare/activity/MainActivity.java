@@ -32,13 +32,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_blood_sugar:
-                Intent bloodSugarIntent = new Intent(mActivity,CheckActivity.class);
-                bloodSugarIntent.putExtra(AllRecordsActivity.INTENT_FROM, AllRecordsActivity.INTENT_FROM_BLOOD_SUGAR);
+                Intent bloodSugarIntent = new Intent(mActivity,CheckBloodSugarActivity.class);
+                bloodSugarIntent.putExtra(AllBloodSugarRecordsActivity.INTENT_FROM, AllBloodSugarRecordsActivity.INTENT_FROM_BLOOD_SUGAR);
                 startActivity(bloodSugarIntent);
                 break;
             case R.id.bt_blood_pressure:
-                Intent bloodPressureIntent = new Intent(mActivity,CheckActivity.class);
-                bloodPressureIntent.putExtra(AllRecordsActivity.INTENT_FROM, AllRecordsActivity.INTENT_FROM_BLOOD_PRESSURE);
+                Intent bloodPressureIntent = new Intent(mActivity,CheckBloodPressureActivity.class);
+                bloodPressureIntent.putExtra(AllBloodSugarRecordsActivity.INTENT_FROM, AllBloodSugarRecordsActivity.INTENT_FROM_BLOOD_PRESSURE);
                 startActivity(bloodPressureIntent);
                 break;
         }
